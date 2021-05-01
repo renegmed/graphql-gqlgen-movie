@@ -1,0 +1,1 @@
+Learning GraphQL gqlgen based on GraphQL workshop 

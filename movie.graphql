@@ -1,0 +1,104 @@
+schema {
+    # The query root of Workshop GraphQL interface.
+    query: Query
+    # The root query for implementing GraphQL mutations.
+    mutation: Mutation
+    # The root query for implementing GraphQL subscriptions.
+    subscription: Subscription
+
+}
+
+"""Available queries for Workshop API"""
+type Query {
+    """It returns the list of directors."""
+    listDirectors:[Director!]
+    """It returns the list of actors."""
+    listActors:[Actor!]
+    """It returns the list of movies."""
+    listMovies:[Movie!]
+    """It returns the movie with the fiven id"""
+    getMovie("Movie identifier" movieId:ID!):Movie
+}
+
+"""Available mutations for Workshop API"""
+type Mutation {
+    """I adds a new movie"""
+    addMovie(request:MovieRequest):Movie!
+    """I adds a new actor"""
+    addDirector(request:DirectorRequest):Director!
+    """I deletes the director with the fiven identifier"""
+    deleteDirector("Identifier of the director" directorId:ID!):[Director!]
+}
+
+"""Available subscriptions for Workshop API"""
+type Subscription {
+    """It returns the movies for a given director"""
+    listenDirectorMovies(directorId:ID!):Movie!
+}
+
+
+"""Request info for creating a movie"""
+input MovieRequest {
+    "Name of the movie"
+    title: String!
+    "Year when the movie was released"
+    year: Int
+    "Genre for the movie, supported values should be: SciFi, Drama, Comedy or Action"
+    genre: String
+    "Budget for the movie, the value is provided in Euro"
+    budget: Float!
+    "URL in which we can watch the trailer of this movie"
+    trailer: String
+    "Identifier of director"
+    directorId: ID!
+}
+
+"""Movie details"""
+type Movie {
+    "Unique identifier for each movie"
+    id: ID!
+    "Name of the movie"
+    title: String!
+    "Year when the movie was released"
+    year: Int
+    "Genre for the movie, supported values should be: SciFi, Drama, Comedy or Action"
+    genre: String
+    "Budget for the movie, the value is provided in Euro"
+    budget: Float!
+    "URL in which we can watch the trailer of this movie"
+    trailer: String
+    "The director details of the movie"
+    director: Director!
+    "List of actors for the movie"
+    actors("Total of returned actors" total:Int=1): [Actor!]
+}
+
+"""Director details"""
+type Director{
+    "Unique identifier for each director"
+    id: ID!
+    "Full name of the director"
+    fullName: String!
+    "Country in which the director was born"
+    country: String
+}
+
+"""Director creation request"""
+input DirectorRequest{
+    "Full name of the director"
+    fullName: String!
+    "Country in which the director was born"
+    country: String
+}
+
+"""Actor details"""
+type Actor {
+    "Unique identifier for each actor"
+    id: ID!
+    "Full name of the actor"
+    fullName: String!
+    "Country in which the actor was born"
+    country: String
+    "Gender of actor: Supported values are male or female"
+    gender: String
+}

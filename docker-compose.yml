@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+
+  postgres:
+    container_name: postgres
+    restart: always
+    image: postgres:latest
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    environment:
+      - DEBUG=true
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=pass123
+      - POSTGRES_DB=moviedb
+      - DATABASE_HOST=postgres
+    volumes:
+      - ./postgres-data:/var/lib/postgresql
+      - ./sql-script/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - default
